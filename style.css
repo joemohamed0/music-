@@ -1,1 +1,84 @@
+body {
+    margin: 0;
+    padding: 0;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background: linear-gradient(135deg, #121212 0%, #1e1e24 100%);
+    color: #ffffff;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+
+.player-container {
+    text-align: center;
+    background: #282828;
+    padding: 30px;
+    border-radius: 15px;
+    box-shadow: 0 8px 24px rgba(0,0,0,0.5);
+    width: 90%;
+    max-width: 500px;
+}
+
+h1 {
+    margin-bottom: 5px;
+    color: #1DB954; /* Clean streaming green */
+}
+
+p {
+    color: #b3b3b3;
+    font-size: 14px;
+    margin-bottom: 25px;
+}
+
+.search-box {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 25px;
+}
+
+input {
+    flex: 1;
+    padding: 12px;
+    border: none;
+    border-radius: 25px;
+    background-color: #3e3e3e;
+    color: white;
+    font-size: 16px;
+    outline: none;
+}
+
+button {
+    background-color: #1DB954;
+    color: white;
+    border: none;
+    padding: 12px 25px;
+    border-radius: 25px;
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background 0.2s;
+}
+
+button:hover {
+    background-color: #1ed760;
+}
+
+.player-wrapper {
+    background-color: #1f1f1f;
+    padding: 20px;
+    border-radius: 10px;
+}
+
+#trackTitle {
+    font-size: 16px;
+    margin-top: 0;
+    margin-bottom: 15px;
+    color: #e5e5e5;
+}
+
+audio {
+    width: 100%;
+    outline: none;
+}
 

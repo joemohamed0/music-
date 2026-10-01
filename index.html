@@ -1,1 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My VPN-Friendly Jukebox</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <div class="player-container">
+        <h1>🎵 Universal Music Player</h1>
+        <p>Search independent artists & stream audio directly (No YouTube required!)</p>
+        
+        <div class="search-box">
+            <input type="text" id="songQuery" placeholder="Search tracks or artists (e.g., Rock, Lo-Fi, Pop)...">
+            <button onclick="searchAndPlay()">Play Song</button>
+        </div>
+
+        <div class="player-wrapper">
+            <h3 id="trackTitle">No song playing</h3>
+            <!-- Native HTML5 audio player avoids YouTube completely -->
+            <audio id="audioPlayer" controls autoplay></audio>
+        </div>
+    </div>
+
+    <script>
+        async function searchAndPlay() {
+            const query = document.getElementById('songQuery').value;
+            const trackTitle = document.getElementById('trackTitle');
+            const audioPlayer = document.getElementById('audioPlayer');
+
+            if (!query) {
+                alert('Please type a song name first!');
+                return;
+            }
+            
+            trackTitle.innerText = "Searching global indie network...";
+
+            try {
+                // Uses a public Jamendo developer token to parse a live text query
+                const apiUrl = `https://jamendo.com{encodeURIComponent(query)}`;
+                const response = await fetch(apiUrl);
+                const data = await response.json();
+
+                if (data.results && data.results.length > 0) {
+                    const track = data.results[0];
+                    
+                    // Display the dynamic metadata on screen
+                    trackTitle.innerText = `Playing: ${track.name} — By: ${track.artist_name}`;
+                    
+                    // Bind the audio element source directly to the returned web stream URL
+                    audioPlayer.src = track.audio;
+                    audioPlayer.play();
+                } else {
+                    trackTitle.innerText = "❌ No matching tracks found. Try another search term!";
+                }
+            } catch (error) {
+                console.error("Connection Error:", error);
+                trackTitle.innerText = "⚠️ Network error loading audio. Check your VPN settings.";
+            }
+        }
+
+        // Bind the keyboard "Enter" key directly to our interface function
+        document.getElementById('songQuery').addEventListener('keypress', function (e) {
+            if (e.key === 'Enter') {
+                searchAndPlay();
+            }
+        });
+    </script>
+</body>
+</html>
 

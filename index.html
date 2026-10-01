@@ -10,58 +10,40 @@
 
     <div class="player-container">
         <h1>🎵 Universal Music Player</h1>
-        <p>Search independent artists & stream audio directly (No YouTube required!)</p>
+        <p>Streaming tracks globally using VPN-safe SoundCloud layers!</p>
         
         <div class="search-box">
-            <input type="text" id="songQuery" placeholder="Search tracks or artists (e.g., Rock, Lo-Fi, Pop)...">
+            <input type="text" id="songQuery" placeholder="Type any track or artist name...">
             <button onclick="searchAndPlay()">Play Song</button>
         </div>
 
         <div class="player-wrapper">
-            <h3 id="trackTitle">No song playing</h3>
-            <!-- Native HTML5 audio player avoids YouTube completely -->
-            <audio id="audioPlayer" controls autoplay></audio>
+            <h3 id="trackTitle">Ready to stream</h3>
+            <!-- Embeds a clean SoundCloud widget frame -->
+            <iframe id="scPlayer" width="100%" height="166" scrolling="no" frameborder="no" allow="autoplay" src=""></iframe>
         </div>
     </div>
 
     <script>
-        async function searchAndPlay() {
+        function searchAndPlay() {
             const query = document.getElementById('songQuery').value;
             const trackTitle = document.getElementById('trackTitle');
-            const audioPlayer = document.getElementById('audioPlayer');
+            const player = document.getElementById('scPlayer');
 
             if (!query) {
                 alert('Please type a song name first!');
                 return;
             }
             
-            trackTitle.innerText = "Searching global indie network...";
-
-            try {
-                // Uses a public Jamendo developer token to parse a live text query
-                const apiUrl = `https://jamendo.com{encodeURIComponent(query)}`;
-                const response = await fetch(apiUrl);
-                const data = await response.json();
-
-                if (data.results && data.results.length > 0) {
-                    const track = data.results[0];
-                    
-                    // Display the dynamic metadata on screen
-                    trackTitle.innerText = `Playing: ${track.name} — By: ${track.artist_name}`;
-                    
-                    // Bind the audio element source directly to the returned web stream URL
-                    audioPlayer.src = track.audio;
-                    audioPlayer.play();
-                } else {
-                    trackTitle.innerText = "❌ No matching tracks found. Try another search term!";
-                }
-            } catch (error) {
-                console.error("Connection Error:", error);
-                trackTitle.innerText = "⚠️ Network error loading audio. Check your VPN settings.";
-            }
+            trackTitle.innerText = `Searching for: "${query}"...`;
+            
+            // Re-route the text query through SoundCloud's official embedded widget search utility
+            const formattedQuery = encodeURIComponent(query);
+            const streamUrl = `https://soundcloud.com{formattedQuery}&auto_play=true&show_teaser=false&visual=false`;
+            
+            player.src = streamUrl;
         }
 
-        // Bind the keyboard "Enter" key directly to our interface function
         document.getElementById('songQuery').addEventListener('keypress', function (e) {
             if (e.key === 'Enter') {
                 searchAndPlay();
@@ -70,4 +52,3 @@
     </script>
 </body>
 </html>
-
